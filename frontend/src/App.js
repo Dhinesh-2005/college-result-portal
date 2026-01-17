@@ -673,7 +673,7 @@ const StudentResultPage = () => {
     });
     
     // Footer
-    const finalY = doc.lastAutoTable.finalY + 20;
+    const finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 20 : 200;
     doc.setFontSize(9);
     doc.setTextColor(107, 114, 128);
     doc.text("This is a computer-generated document.", pageWidth / 2, finalY, { align: "center" });
