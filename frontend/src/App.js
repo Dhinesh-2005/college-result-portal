@@ -573,6 +573,122 @@ const StudentResultPage = () => {
     }
   };
 
+  // PDF Download Function
+  const downloadPDF = () => {
+    if (!result) return;
+
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    
+    // Header - College Name
+    doc.setFillColor(59, 130, 246); // Blue color
+    doc.rect(0, 0, pageWidth, 35, "F");
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
+    doc.text("ST PETERS COLLEGE OF ENGINEERING", pageWidth / 2, 15, { align: "center" });
+    doc.setFontSize(12);
+    doc.text("AND TECHNOLOGY", pageWidth / 2, 22, { align: "center" });
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("Examination Branch - Official Marksheet", pageWidth / 2, 30, { align: "center" });
+    
+    // Reset text color
+    doc.setTextColor(0, 0, 0);
+    
+    // Student Details Section
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Student Information", 14, 50);
+    
+    doc.setDrawColor(59, 130, 246);
+    doc.setLineWidth(0.5);
+    doc.line(14, 53, 196, 53);
+    
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    
+    // Student info in a box
+    doc.setFillColor(249, 250, 251);
+    doc.roundedRect(14, 58, 182, 35, 3, 3, "F");
+    
+    doc.setFont("helvetica", "bold");
+    doc.text("Name:", 20, 68);
+    doc.text("Roll Number:", 20, 78);
+    doc.text("Course:", 20, 88);
+    
+    doc.setFont("helvetica", "normal");
+    doc.text(result.name, 55, 68);
+    doc.text(result.rollNo, 55, 78);
+    doc.text(result.course, 55, 88);
+    
+    // Results Table
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Examination Results", 14, 108);
+    doc.line(14, 111, 196, 111);
+    
+    // Table data
+    const tableData = result.results.map((subject) => [
+      subject.semester,
+      subject.code,
+      subject.grade,
+      subject.status
+    ]);
+    
+    // Generate table
+    doc.autoTable({
+      startY: 115,
+      head: [["Semester", "Subject Code", "Grade", "Status"]],
+      body: tableData,
+      theme: "grid",
+      headStyles: {
+        fillColor: [59, 130, 246],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+        halign: "center"
+      },
+      bodyStyles: {
+        halign: "center"
+      },
+      columnStyles: {
+        0: { cellWidth: 35 },
+        1: { cellWidth: 60 },
+        2: { cellWidth: 35 },
+        3: { cellWidth: 35 }
+      },
+      didParseCell: function(data) {
+        // Color the status cell based on Pass/Fail
+        if (data.column.index === 3 && data.section === "body") {
+          if (data.cell.raw === "Pass") {
+            data.cell.styles.textColor = [22, 163, 74]; // Green
+            data.cell.styles.fontStyle = "bold";
+          } else {
+            data.cell.styles.textColor = [220, 38, 38]; // Red
+            data.cell.styles.fontStyle = "bold";
+          }
+        }
+      }
+    });
+    
+    // Footer
+    const finalY = doc.lastAutoTable.finalY + 20;
+    doc.setFontSize(9);
+    doc.setTextColor(107, 114, 128);
+    doc.text("This is a computer-generated document.", pageWidth / 2, finalY, { align: "center" });
+    doc.text(`Generated on: ${new Date().toLocaleDateString("en-IN", { 
+      day: "2-digit", 
+      month: "long", 
+      year: "numeric" 
+    })}`, pageWidth / 2, finalY + 6, { align: "center" });
+    doc.text("© 2025 St Peters College of Engineering and Technology", pageWidth / 2, finalY + 12, { align: "center" });
+    
+    // Save the PDF
+    doc.save(`Result_${result.rollNo}_${result.name.replace(/\s+/g, "_")}.pdf`);
+    toast.success("PDF downloaded successfully!");
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
