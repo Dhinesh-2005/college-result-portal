@@ -55,15 +55,20 @@ ADMIN_PHONE=           (optional)
 - [x] Professional academic UI (blue/white/grey theme)
 - [x] Responsive design
 - [x] All credentials in .env
+- [x] **PDF Download Feature** (added Jan 17, 2026)
+  - Download button on student result page
+  - Official marksheet format with college header
+  - Student details + results table with Pass/Fail colors
+  - Uses jspdf + jspdf-autotable (frontend-only)
 
 ## Testing Status
 - Backend: 100% (8/8 tests passed)
-- Frontend: 95% (all flows working)
+- Frontend: 100% (all flows including PDF download working)
 
 ## Next Actions / Backlog
 - P1: Add Twilio credentials for production OTP
-- P2: Add result download as PDF
 - P2: Add bulk delete functionality
 - P3: Add admin password change feature
+- P3: Add result history/audit log
 
 ## Date: January 17, 2026
