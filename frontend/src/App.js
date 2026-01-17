@@ -638,7 +638,7 @@ const StudentResultPage = () => {
     ]);
     
     // Generate table
-    doc.autoTable({
+    autoTable(doc, {
       startY: 115,
       head: [["Semester", "Subject Code", "Grade", "Status"]],
       body: tableData,
