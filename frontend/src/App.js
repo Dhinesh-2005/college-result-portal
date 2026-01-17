@@ -756,11 +756,22 @@ const StudentResultPage = () => {
           {/* Result Display */}
           {result && (
             <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8" data-testid="result-display">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Award className="w-5 h-5 text-green-600" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                    <Award className="w-5 h-5 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800">Examination Result</h3>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800">Examination Result</h3>
+                <button
+                  onClick={downloadPDF}
+                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all"
+                  data-testid="download-pdf-btn"
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">Download PDF</span>
+                  <span className="sm:hidden">PDF</span>
+                </button>
               </div>
 
               {/* Student Info */}
