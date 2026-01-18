@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "@/App.css";
+import './App.css';
 import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
@@ -532,7 +532,7 @@ const AdminDashboard = () => {
             <div className="mt-6 p-4 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600 font-medium mb-2">Excel Format Guide:</p>
               <p className="text-xs text-gray-500">
-                Columns: rollNo, name, dob, course, subjectCode1, subjectSemester1, subjectGrade1, ... (up to 25 subjects)
+                Columns: rollNo, name, dob, course,subjectSemester1,subjectCode1, subjectGrade1, ... (up to 25 subjects)
               </p>
             </div>
           </div>
