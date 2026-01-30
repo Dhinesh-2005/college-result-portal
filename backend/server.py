@@ -192,7 +192,7 @@ async def save_student(student: StudentCreate, token: str):
     return {"message": "Saved successfully"}
 
 # =====================
-# EXCEL UPLOAD (MULTI SHEET + FLEX HEADERS)
+# EXCEL UPLOAD (MULTI SHEET + DOB FIX)
 # =====================
 
 @api_router.post("/admin/upload")
@@ -212,13 +212,20 @@ async def upload_excel(file: UploadFile = File(...), token: str = None):
 
             row_data = dict(zip(raw_headers, row))
 
+            # 🔹 DOB FIX (dd/mm/yyyy handled)
             dob = row_data.get("dob", "")
             if isinstance(dob, (int, float)):
                 dob = (datetime(1899, 12, 30) + timedelta(days=int(dob))).strftime("%Y-%m-%d")
             elif isinstance(dob, datetime):
                 dob = dob.strftime("%Y-%m-%d")
+            elif isinstance(dob, str):
+                dob = dob.strip()
+                try:
+                    dob = datetime.strptime(dob, "%d/%m/%Y").strftime("%Y-%m-%d")
+                except ValueError:
+                    dob = dob
             else:
-                dob = str(dob)
+                dob = ""
 
             subjects = []
             for i in range(1, 26):
@@ -267,7 +274,7 @@ async def verify_admin(token: str):
     return {"valid": bool(verify_token(token))}
 
 # =====================
-# FINAL SETUP
+# FINAL
 # =====================
 
 app.include_router(api_router)
